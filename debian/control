@@ -1,0 +1,13 @@
+Source: striptool
+Section: contrib/x11
+Priority: extra
+Maintainer: Michael Davidsaver <mdavidsaver@bnl.gov>
+Build-Depends: debhelper (>= 7), epics-dev (>= 3.14.10) , epics-extensions-dev, libgif-dev, libpng-dev, libz-dev, libreadline-dev, libmotif-dev, libx11-dev, libxp-dev, libxmu-dev, libxtst-dev, libxpm-dev, x11proto-print-dev
+Standards-Version: 3.7.3
+Homepage: http://www.aps.anl.gov/epics/extensions/StripTool/index.php
+
+Package: striptool
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, epics-libs (>= 3.14.10), netpbm, cups-bsd | lpr | lprng
+Description: The Extensible Display Manager
+ A display manager (GUI) for the EPICS control system
