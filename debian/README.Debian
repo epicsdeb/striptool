@@ -1,6 +1,8 @@
 striptool for Debian
 --------------
 
-<possible notes regarding this package - if none, delete this file>
+These is an unresolved font issue with Striptool and
+some X servers (eg TightVNC) while results in all
+text being replaced with small boxes.
 
  -- Michael Davidsaver <mdavidsaver@bnl.gov>  Mon, 22 Jun 2009 13:24:45 -0400

@@ -1,102 +1,42 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
 
-# Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-SOV=2.5.12.0
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/makefile.mk
+include /usr/share/cdbs/1/rules/utils.mk
+
+# chop out the source version from Changelog (ie 2.5.12.0)
+SOV=$(shell echo "$(DEB_NOEPOCH_VERSION)"| cut -f 1 -d '-')
 
 EPICS_HOST_ARCH:=$(shell /usr/epics/base/startup/EpicsHostArch)
 
-ENV=EPICS_HOST_ARCH=$(EPICS_HOST_ARCH)
-CONFIG=INSTALL_LOCATION_EXTENSIONS=$(CURDIR)/build/inst USE_RPATH=NO SHRLIB_VERSION=$(SOV)
-CONFIG+=USE_SDDS=NO
+DEB_MAKE_MAKEVARS = EPICS_HOST_ARCH=$(EPICS_HOST_ARCH) USE_RPATH=NO USE_SDDS=NO
+DEB_MAKE_MAKEVARS+= SHRLIB_VERSION=$(SOV)
 
-BLOB=$(wildcard *)
-SRC=$(filter-out debian,$(filter-out build,$(BLOB)))
+DEB_MAKE_INVOKE  = $(DEB_MAKE_ENVVARS) $(MAKE) -C $(DEB_BUILDDIR) $(DEB_MAKE_MAKEVARS)
 
-build: build-stamp
+DEB_MAKE_CLEAN_TARGET =
+DEB_MAKE_BUILD_TARGET = all
+DEB_MAKE_INSTALL_TARGET = all INSTALL_LOCATION=$(CURDIR)/debian/tmp/usr
+DEB_MAKE_CHECK_TARGET =
 
-binbuild=build/inst/bin/$(EPICS_HOST_ARCH)
-libbuild=build/inst/lib/$(EPICS_HOST_ARCH)
+# prevent debug targets from being stripped
+DEB_DH_STRIP_ARGS := -Xdebug
 
-build-stamp:
-	dh_testdir
+DEB_INSTALL_DOCS_ALL := README StripTool.html THANKS
 
-	install -d build/src/striptool
-	cp -r $(SRC) build/src/striptool
-	ln -s /usr/epics/extensions/configure build/configure
+post-patches:: configure
 
-	$(ENV) $(MAKE) -C build/src/striptool $(CONFIG)
+configure:
+	ln -s /usr/epics/extensions/configure .
 
-	touch $@
+install/striptool::
+	mv $(CURDIR)/debian/tmp/usr/bin/$(EPICS_HOST_ARCH)/StripTool $(CURDIR)/debian/tmp/usr/bin
+	rmdir $(CURDIR)/debian/tmp/usr/bin/$(EPICS_HOST_ARCH)
+	ln -s StripTool $(CURDIR)/debian/tmp/usr/bin/striptool
 
-clean: 
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-
-	# Add here commands to clean up after the build process.
-	rm -rf build
-
-	dh_clean 
-
-devbindir=debian/striptool-dev/usr/epics/base/bin/$(EPICS_HOST_ARCH)
-devlibdir=debian/striptool-dev/usr/epics/base/lib/$(EPICS_HOST_ARCH)
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k 
-	dh_installdirs
-
-	install -d debian/striptool/usr/bin
-	install -m 755 build/inst/bin/$(EPICS_HOST_ARCH)/StripTool debian/striptool/usr/bin/
-	ln -s StripTool debian/striptool/usr/bin/striptool
-
-	install -d debian/striptool/usr/share/doc/striptool
-	install -m 644 -t debian/striptool/usr/share/doc/striptool README* THANKS StripTool.html
-
-
-# Build architecture-independent files here.
-binary-indep: build install
-# We have nothing to do by default.
-
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs 
-	dh_installdocs
-	dh_installexamples
-#	dh_install
-#	dh_installmenu
-#	dh_installdebconf	
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-#	dh_python
-#	dh_installinit
-#	dh_installcron
-#	dh_installinfo
-	dh_installman
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-#	dh_perl
-	dh_makeshlibs
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+clean::
+	rm -rf bin O.$(EPICS_HOST_ARCH)
+	rm -f configure
