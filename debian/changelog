@@ -1,3 +1,9 @@
+striptool (2.5.12.0-3) unstable; urgency=low
+
+  * Update dependency
+
+ -- Michael Davidsaver <mdavidsaver@bnl.gov>  Sun, 27 Dec 2009 18:13:02 -0500
+
 striptool (2.5.12.0-2) unstable; urgency=low
 
   * Fix copyright
