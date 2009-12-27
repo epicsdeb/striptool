@@ -3,7 +3,7 @@ Section: contrib/x11
 Priority: extra
 Maintainer: Michael Davidsaver <mdavidsaver@bnl.gov>
 Build-Depends: debhelper (>= 7), cdbs,
-               epics-dev (>= 3.14.10), epics-dev (<< 3.14.11),
+               epics-dev (>= 3.14.10-10), epics-dev (<< 3.14.11),
                epics-extensions-dev (>= 20091204),
                libgif-dev, libpng-dev, libz-dev, libreadline-dev,
                libmotif-dev, libx11-dev, libxp-dev, libxmu-dev,
