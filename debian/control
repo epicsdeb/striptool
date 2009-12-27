@@ -13,8 +13,7 @@ Homepage: http://www.aps.anl.gov/epics/extensions/StripTool/index.php
 
 Package: striptool
 Architecture: any
-Depends: epics-libs (>= 3.14.10), epics-libs (<< 3.14.11),
-        netpbm, cups-bsd | lpr | lprng
+Depends: netpbm, cups-bsd | lpr | lprng,
         ${shlibs:Depends}, ${misc:Depends},
 Description: The Extensible Display Manager
  A display manager (GUI) for the EPICS control system
