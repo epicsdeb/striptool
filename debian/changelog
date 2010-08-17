@@ -1,3 +1,9 @@
+striptool (2.5.12.0-4) unstable; urgency=low
+
+  * Use Base in /usr/lib/epics
+
+ -- Michael Davidsaver <mdavidsaver@bnl.gov>  Tue, 17 Aug 2010 14:44:06 -0400
+
 striptool (2.5.12.0-3) unstable; urgency=low
 
   * Update dependency
