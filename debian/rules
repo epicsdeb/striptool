@@ -10,7 +10,7 @@ include /usr/share/cdbs/1/rules/utils.mk
 # chop out the source version from Changelog (ie 2.5.12.0)
 SOV=$(shell echo "$(DEB_NOEPOCH_VERSION)"| cut -f 1 -d '-')
 
-EPICS_HOST_ARCH:=$(shell /usr/epics/base/startup/EpicsHostArch)
+EPICS_HOST_ARCH:=$(shell /usr/lib/epics/startup/EpicsHostArch)
 
 DEB_MAKE_MAKEVARS = EPICS_HOST_ARCH=$(EPICS_HOST_ARCH) USE_RPATH=NO USE_SDDS=NO
 DEB_MAKE_MAKEVARS+= SHRLIB_VERSION=$(SOV)
@@ -30,7 +30,7 @@ DEB_INSTALL_DOCS_ALL := README StripTool.html THANKS
 post-patches:: configure
 
 configure:
-	ln -s /usr/epics/extensions/configure .
+	ln -s /usr/lib/epics/extensions/configure .
 
 install/striptool::
 	mv $(CURDIR)/debian/tmp/usr/bin/$(EPICS_HOST_ARCH)/StripTool $(CURDIR)/debian/tmp/usr/bin
